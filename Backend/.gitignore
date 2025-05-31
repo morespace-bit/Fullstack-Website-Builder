@@ -118,7 +118,4 @@ dist
 .pnp.*
 
 
-# environment variables as well
-.env
-
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node
