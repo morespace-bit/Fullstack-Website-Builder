@@ -5,6 +5,8 @@ import { dotEnv } from "./src/config/config";
 //server.ts so that the connection code runs and everthing happnes if were to be not imported the connection code woouldn't work
 import "./src/database/connection";
 
+// now importing the model
+
 // the function to run the server
 const serverRun = () => {
   app.listen(dotEnv.port, () => {
