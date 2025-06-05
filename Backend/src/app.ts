@@ -3,6 +3,8 @@ import authRoute from "./routes/globals/auth.route";
 
 const app = express();
 
-app.unsubscribe("/api/", authRoute);
+app.use(express.json());
+
+app.use("/api", authRoute);
 
 export default app;

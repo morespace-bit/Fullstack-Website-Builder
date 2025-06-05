@@ -28,6 +28,7 @@ class AuthController {
         password,
         email,
       });
+      res.json({ message: "The user data creation was successfull" });
     }
   }
 }
