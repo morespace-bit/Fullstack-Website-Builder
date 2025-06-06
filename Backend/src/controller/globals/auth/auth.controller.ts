@@ -34,6 +34,7 @@ class AuthController {
           username,
 
           // takes two parameter one what to convert another salt value to make it how strong is it
+
           password: bcrypt.hashSync(password, 12),
         });
       } catch (e) {
@@ -42,9 +43,42 @@ class AuthController {
       res.json({ message: "The user data creation was successfull" });
     }
   }
-}
 
-// login
+  // login
+
+  async loginUser(req: Request, res: Response) {
+    if (req.body === undefined) {
+      res.json({ message: "Enter valid data" });
+      return;
+    }
+
+    const { username, password, email } = req.body;
+
+    if (!username || !password || !email) {
+      res.status(400).json({ message: "Please enter all valid data" });
+      return;
+    }
+
+    try {
+      const user = await User.findOne({ where: { username } });
+
+      if (!user) {
+        res.status(401).json({ Message: "user not found" });
+        return;
+      }
+
+      const isPassValid = bcrypt.compareSync(password, user.password);
+      if (!isPassValid) {
+        res.status(401).json({ Message: "Password did not match" });
+        return;
+      }
+
+      res.status(200).json({ Message: "login successfull" });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
 
 //Forget possword /reset password or otp sending
 
