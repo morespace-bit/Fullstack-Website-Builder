@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import { dotEnv } from "../config/config";
-import { dirname } from "path";
+// import { dirname } from "path";
 import { error } from "console";
 
 // here the Sequelize is the class
@@ -28,7 +28,7 @@ sequelize
 
 // the code for the database migration from local to online database
 sequelize
-  .sync({ force: false })
+  .sync({ alter: true })
   .then(() => {
     console.log("The database migration was successfull");
   })
