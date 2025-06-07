@@ -73,9 +73,9 @@ class AuthController {
         return;
       }
 
-      const isPassValid = bcrypt.compareSync(password, user[0].password);
+      const isPassValid = await bcrypt.compare(password, user[0].password);
       if (!isPassValid) {
-        res.status(401).json({ Message: "Password did not match" });
+        res.status(401).json({ Message: "Invalid Email or password" });
         return;
       }
 
