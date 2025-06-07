@@ -36,6 +36,7 @@ class AuthController {
           // takes two parameter one what to convert another salt value to make it how strong is it
 
           password: bcrypt.hashSync(password, 12),
+          email,
         });
       } catch (e) {
         console.error(e);
@@ -52,22 +53,27 @@ class AuthController {
       return;
     }
 
-    const { username, password, email } = req.body;
+    const { username, password } = req.body;
 
-    if (!username || !password || !email) {
+    if (!username || !password) {
       res.status(400).json({ message: "Please enter all valid data" });
       return;
     }
 
     try {
-      const user = await User.findOne({ where: { username } });
+      // checking if the user is already registred in or not
+      const user = await User.findAll({ where: { username } });
+      console.log(user, "hello world");
+      console.log(user[0].password, "Hello world");
 
-      if (!user) {
-        res.status(401).json({ Message: "user not found" });
+      if (user.length === 0) {
+        res
+          .status(404)
+          .json({ Message: "user not found Please register yourself" });
         return;
       }
 
-      const isPassValid = bcrypt.compareSync(password, user.password);
+      const isPassValid = bcrypt.compareSync(password, user[0].password);
       if (!isPassValid) {
         res.status(401).json({ Message: "Password did not match" });
         return;
