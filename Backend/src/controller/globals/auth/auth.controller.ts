@@ -6,6 +6,8 @@ import User from "../../../database/models/user.model";
 // importing bcrypt for hashing purpose
 import bcrypt from "bcrypt";
 
+import jwt from "jsonwebtoken";
+
 // Register
 // to integrate this we need to know incomming data --> username, email, password;
 // processing or checking --> email, valid , password, complasary field
@@ -74,12 +76,15 @@ class AuthController {
       }
 
       const isPassValid = await bcrypt.compare(password, user[0].password);
-      if (!isPassValid) {
-        res.status(401).json({ Message: "Invalid Email or password" });
-        return;
-      }
 
-      res.status(200).json({ Message: "login successfull" });
+      if (isPassValid) {
+        const token = jwt.sign({ id: user[0] }, "thisissecret", {
+          expiresIn: "30d",
+        });
+        res.status(200).json({ Message: "login successfull", token });
+      } else {
+        res.status(401).json({ Message: "login unsuccessfull" });
+      }
     } catch (e) {
       console.error(e);
     }
