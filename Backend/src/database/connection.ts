@@ -28,7 +28,7 @@ sequelize
 
 // the code for the database migration from local to online database
 sequelize
-  .sync({ alter: true })
+  .sync({ alter: false })
   .then(() => {
     console.log("The database migration was successfull");
   })

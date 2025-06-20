@@ -78,7 +78,7 @@ class AuthController {
       const isPassValid = await bcrypt.compare(password, user[0].password);
 
       if (isPassValid) {
-        const token = jwt.sign({ id: user[0] }, "thisissecret", {
+        const token = jwt.sign({ id: user[0].id }, "thisissecret", {
           expiresIn: "30d",
         });
         res.status(200).json({ Message: "login successfull", token });
