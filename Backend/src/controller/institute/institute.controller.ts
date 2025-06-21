@@ -3,12 +3,22 @@ import { Response, Request } from "express";
 import sequelize from "../../database/connection";
 import { genereateInstituteNo } from "../../services/generateRandomInstituteNo";
 
+interface IextendedRequest extends Request {
+  user?: {
+    username: string;
+    email: string;
+    role: string;
+  };
+}
+
 class InstituteController {
-  static async createInstitute(req: Request, res: Response) {
+  static async createInstitute(req: IextendedRequest, res: Response) {
     if (!req.body) {
       res.status(400).json({ message: " please enter all the data" });
       return;
     }
+
+    console.log(req.user, "From middleware ");
     const {
       instituteName,
       instituteEmail,
