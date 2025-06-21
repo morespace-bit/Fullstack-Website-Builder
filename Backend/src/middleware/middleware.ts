@@ -2,24 +2,29 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../database/models/user.model";
 import sequelize from "../database/connection";
+import { IextendedRequest } from "./types";
 
 // in middleware we take another arg that is also provided in the
 // other function but in the middleware we have to take next as well
-
-interface IextendedRequest extends Request {
-  user?: {
-    id: string;
-    username: string | null;
-    email: string;
-    role: string;
-  };
-}
 
 class Middleware {
   static isLoggedIn(req: IextendedRequest, res: Response, next: NextFunction) {
     // steps
     // check if tooken
     const token = req.headers.authorization;
+
+    /*
+
+Hdears are of two types
+req headers
+res headers
+
+mime types a time format such as
+image/png text/html
+application/josn
+
+
+*/
 
     if (!token) {
       res.status(401).json({
