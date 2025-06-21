@@ -44,6 +44,13 @@ class User extends Model {
     defaultValue: "Student",
   })
   declare role: string;
+
+  // this one is the table that tracks which table is active
+
+  @Column({
+    type: DataType.STRING,
+  })
+  declare currentInstituteNumber: string;
 }
 
 export default User;

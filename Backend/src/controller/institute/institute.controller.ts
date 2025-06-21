@@ -4,6 +4,8 @@ import sequelize from "../../database/connection";
 import { genereateInstituteNo } from "../../services/generateRandomInstituteNo";
 
 import { IextendedRequest } from "../../middleware/types";
+import User from "../../database/models/user.model";
+import { request } from "http";
 class InstituteController {
   static async createInstitute(req: IextendedRequest, res: Response) {
     if (!req.body) {
@@ -76,7 +78,53 @@ updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       }
     );
 
+    // creating the table called user_institute to track the table created by the user
+
+    /*
+
+
+foreing key the refrences 
+
+
+    */
+
+    await sequelize.query(`CREATE TABLE IF NOT EXISTS user_institute(
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  userId VARCHAR(225) REFERENCES users(id),
+  instituteNumber INT UNIQUE
+  
+  )`);
+
+    if (req.user) {
+      // this is the code to store which institue the user is currently using
+      await User.update(
+        {
+          currentInstituteNumber: instituteNum,
+          role: "institute",
+        },
+        {
+          where: {
+            id: req.user.id,
+          },
+        }
+      );
+
+      // this is the table that is going to be used to store the history of all the institute created by the users
+
+      await sequelize.query(
+        `INSERT INTO user_institute(userId, instituteNumber) VALUES(?,?)`,
+        {
+          replacements: [req.user.id, instituteNum],
+        }
+      );
+    }
+    req.instituteNumber = instituteNum;
+
     res.status(200).json("Institute Created");
+  }
+
+  static async createTeacherTable(req: Request, res: Response) {
+    const { instituteNumber } = req.body;
   }
 }
 

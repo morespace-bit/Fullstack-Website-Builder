@@ -65,8 +65,6 @@ class AuthController {
     try {
       // checking if the user is already registred in or not
       const user = await User.findAll({ where: { username } });
-      console.log(user, "hello world");
-      console.log(user[0].password, "Hello world");
 
       if (user.length === 0) {
         res
@@ -82,9 +80,12 @@ class AuthController {
           expiresIn: "30d",
         });
         res.status(200).json({ Message: "login successfull", token });
-      } else {
-        res.status(401).json({ Message: "login unsuccessfull" });
+        return;
       }
+
+      res
+        .status(400)
+        .json({ message: "Login unsuccessfull invalid credentials" });
     } catch (e) {
       console.error(e);
     }
