@@ -194,7 +194,7 @@ foreing key the refrences
   courseName VARCHAR(255) NOT NULL UNIQUE,
   coursePrice VARCHAR(255) NOT NULL,
   courseDuration VARCHAR(255) NOT NULL,
-  courseLever ENUM('beginner', 'intermediate', 'advance') NOT NULL,
+  courseLevel ENUM('beginner', 'intermediate', 'advance') NOT NULL,
   courseThumbnail VARCHAR(200), 
   courseDescription TEXT,
    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
