@@ -3,7 +3,7 @@ import { Request } from "express";
 export interface IextendedRequest extends Request {
   user?: {
     id: string;
-    instituteNumber?: number;
+    currentInstituteNumber?: string;
   };
 }
 

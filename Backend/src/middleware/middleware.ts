@@ -46,9 +46,12 @@ application/josn
           attributes: ["id", "currentInstituteNumber"],
         });
         if (!userData) {
-          res.status(403).json({ message: "user not found invalid token" });
+          res
+            .status(403)
+            .json({ message: "user not found invalid token", data: userData });
           return;
         }
+        console.log(userData);
         req.user = userData;
 
         next();

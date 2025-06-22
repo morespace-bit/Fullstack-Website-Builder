@@ -123,7 +123,7 @@ foreing key the refrences
       );
     }
     if (req.user) {
-      req.user.instituteNumber = instituteNum;
+      req.user.currentInstituteNumber;
     }
 
     next();
@@ -134,7 +134,7 @@ foreing key the refrences
     res: Response,
     next: NextFunction
   ) {
-    const instituteNumber = req.user?.instituteNumber;
+    const instituteNumber = req.user?.currentInstituteNumber;
     // raw sql query to create a teacherTable with links with the institue number
 
     try {
@@ -162,7 +162,7 @@ foreing key the refrences
     res: Response,
     next: NextFunction
   ) {
-    const instituteNumber = req.user?.instituteNumber;
+    const instituteNumber = req.user?.currentInstituteNumber;
 
     try {
       await sequelize.query(`CREATE TABLE IF NOT EXISTS student_${instituteNumber}(
@@ -186,7 +186,7 @@ foreing key the refrences
   }
 
   static async createCourseTable(req: IextendedRequest, res: Response) {
-    const instituteNumber = req.user?.instituteNumber;
+    const instituteNumber = req.user?.currentInstituteNumber;
     try {
       await sequelize.query(`CREATE TABLE IF NOT EXISTS course_${instituteNumber}(
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -199,8 +199,6 @@ foreing key the refrences
   courseDescription TEXT,
    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-
-  
 
 
   )`);
