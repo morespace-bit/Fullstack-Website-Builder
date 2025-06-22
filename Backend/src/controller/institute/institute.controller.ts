@@ -1,4 +1,4 @@
-import { Response, Request } from "express";
+import { Response, Request, NextFunction } from "express";
 
 import sequelize from "../../database/connection";
 import { genereateInstituteNo } from "../../services/generateRandomInstituteNo";
@@ -7,7 +7,11 @@ import { IextendedRequest } from "../../middleware/types";
 import User from "../../database/models/user.model";
 import { request } from "http";
 class InstituteController {
-  static async createInstitute(req: IextendedRequest, res: Response) {
+  static async createInstitute(
+    req: IextendedRequest,
+    res: Response,
+    next: NextFunction
+  ) {
     if (!req.body) {
       res.status(400).json({ message: " please enter all the data" });
       return;
@@ -118,13 +122,93 @@ foreing key the refrences
         }
       );
     }
-    req.instituteNumber = instituteNum;
+    if (req.user) {
+      req.user.instituteNumber = instituteNum;
+    }
 
-    res.status(200).json("Institute Created");
+    next();
   }
 
-  static async createTeacherTable(req: Request, res: Response) {
-    const { instituteNumber } = req.body;
+  static async createTeacherTable(
+    req: IextendedRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    const instituteNumber = req.user?.instituteNumber;
+    // raw sql query to create a teacherTable with links with the institue number
+
+    try {
+      await sequelize.query(`CREATE TABLE IF NOT EXISTS teacher_${instituteNumber}(
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  teacherName VARCHAR(255)  NOT NULL UNIQUE,
+  teacherPhoneNumber  VARCHAR(255) NOT NULL UNIQUE,
+  teacherExpertise VARCHAR(255),
+  joinedDate DATE,
+  salary VARCHAR(100),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  
+  )`);
+      next();
+    } catch (e) {
+      console.log("Error", e);
+      res
+        .status(500)
+        .json({ message: "internal server error in teacher table creation" });
+    }
+  }
+  static async createStudentTable(
+    req: IextendedRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    const instituteNumber = req.user?.instituteNumber;
+
+    try {
+      await sequelize.query(`CREATE TABLE IF NOT EXISTS student_${instituteNumber}(
+        id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        studentName VARCHAR(255) NOT NULL,
+        sudentPhoneNo VARCHAR(255) NOT NULL UNIQUE,
+        studentAddress VARCHAR(255), 
+        enrolledDate DATE,
+        sutdentImage VARCHAR(255),
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )`);
+
+      next();
+    } catch (e) {
+      console.log("Error", e);
+      res
+        .status(500)
+        .json({ message: "internal server error in student table creation" });
+    }
+  }
+
+  static async createCourseTable(req: IextendedRequest, res: Response) {
+    const instituteNumber = req.user?.instituteNumber;
+    try {
+      await sequelize.query(`CREATE TABLE IF NOT EXISTS course_${instituteNumber}(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+
+  courseName VARCHAR(255) NOT NULL UNIQUE,
+  coursePrice VARCHAR(255) NOT NULL,
+  courseDuration VARCHAR(255) NOT NULL,
+  courseLever ENUM('beginner', 'intermediate', 'advance') NOT NULL,
+  courseThumbnail VARCHAR(200), 
+  courseDescription TEXT,
+   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+
+  
+
+
+  )`);
+
+      res.status(200).json({ message: "Institute creation was successfull" });
+    } catch (e) {
+      console.log("Error in course table", e);
+    }
   }
 }
 

@@ -42,7 +42,9 @@ application/josn
           message: "Token invalid",
         });
       } else {
-        const userData = await User.findByPk(result.id);
+        const userData = await User.findByPk(result.id, {
+          attributes: ["id", "currentInstituteNumber"],
+        });
         if (!userData) {
           res.status(403).json({ message: "user not found invalid token" });
           return;

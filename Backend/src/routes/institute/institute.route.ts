@@ -1,5 +1,5 @@
 import { Router } from "express";
-import InstututeController from "../../controller/institute/institute.controller";
+import InstituteController from "../../controller/institute/institute.controller";
 import Middleware from "../../middleware/middleware";
 import asyncErrorHandler from "../../services/asyncErrorHandler";
 
@@ -11,7 +11,10 @@ router
   .route("/createInstitute")
   .post(
     Middleware.isLoggedIn,
-    asyncErrorHandler(InstututeController.createInstitute)
+    InstituteController.createInstitute,
+    InstituteController.createTeacherTable,
+    InstituteController.createStudentTable,
+    InstituteController.createCourseTable
   );
 
 export default router;
