@@ -2,6 +2,7 @@ import { Response } from "express";
 import { IextendedRequest } from "../../../middleware/types";
 import sequelize from "../../../database/connection";
 import { generateRandomPassword } from "../../../services/generatePassword";
+import sendMail from "../../../services/sendMail";
 
 class Teacher {
   static async createTeacher(req: IextendedRequest, res: Response) {
@@ -66,6 +67,7 @@ class Teacher {
       }
     );
 
+    await sendMail(teacherEmail, passData.plain);
     res.status(201).json({ message: "Teacher created" });
   }
 

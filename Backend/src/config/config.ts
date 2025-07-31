@@ -10,4 +10,6 @@ export const dotEnv = {
   dbDialect: process.env.DB_DIALECT,
   dbHost: process.env.DB_HOST,
   dbPort: process.env.DB_PORT,
+  gmail: process.env.GOOGLE_APP_EMAIL,
+  password: process.env.GOOGLE_APP_PASSWORD,
 };
