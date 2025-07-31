@@ -68,6 +68,32 @@ class CourseController {
       message: "course creted successfully",
     });
   }
+
+  static async getAllCourse(req: IextendedRequest, res: Response) {
+    const instituteNumber = req.user?.currentInstituteNumber;
+    const data = await sequelize.query(`SHOW TABLES LIKE 'course_%' `);
+    const course = await sequelize.query(
+      `SELECT * FORM course_${instituteNumber})`
+    );
+    res.status(200).json({ message: "course fetched", data: course });
+  }
+
+  static async getSingleCourse(req: IextendedRequest, res: Response) {
+    const instituteNumber = req.user?.currentInstituteNumber;
+    const courseId = req.params.id;
+
+    const course = await sequelize.query(
+      `SELECT * FROM course_${instituteNumber} WHERE id = ?`,
+      { replacements: [courseId] }
+    );
+
+    res.status(200).json({
+      message: "single course fetched",
+      data: course,
+    });
+  }
 }
 
 export default CourseController;
+
+// we can also data seed meaning putting some data already like pre data loading
