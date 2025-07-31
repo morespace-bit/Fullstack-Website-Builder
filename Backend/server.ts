@@ -9,7 +9,7 @@ import "./src/database/connection";
 
 // the function to run the server
 const serverRun = () => {
-  app.listen(dotEnv.port, () => {
+  app.listen(Number(dotEnv.port), () => {
     console.log(`The server is running on the port ${dotEnv.port}`);
   });
 };

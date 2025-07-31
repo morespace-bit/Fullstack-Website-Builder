@@ -10,5 +10,4 @@ app.use(express.json());
 app.use("/api", authRoute);
 app.use("/api/institute", instituteRoute);
 app.use("/api/course", courseRoute);
-
 export default app;

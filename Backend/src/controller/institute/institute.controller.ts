@@ -208,6 +208,25 @@ foreing key the refrences
       console.log("Error in course table", e);
     }
   }
+
+  static async createCategoryTable(
+    req: IextendedRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    const instituteNumber = req.user?.currentInstituteNumber;
+    await sequelize.query(
+      `CREATE TABLE IF NOT EXISTS category_${instituteNumber}(
+      id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+      categoryName VARCHAR(100) NOT NULL,
+      categoryDescription TEXT,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+
+      )`
+    );
+    next();
+  }
 }
 
 export default InstituteController;
