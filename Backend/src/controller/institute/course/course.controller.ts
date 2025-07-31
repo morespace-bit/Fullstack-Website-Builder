@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IextendedRequest } from "../../../middleware/types";
 import sequelize from "../../../database/connection";
+import { QueryTypes } from "sequelize";
 
 class CourseController {
   static async createCourse(req: IextendedRequest, res: Response) {
@@ -71,9 +72,12 @@ class CourseController {
 
   static async getAllCourse(req: IextendedRequest, res: Response) {
     const instituteNumber = req.user?.currentInstituteNumber;
-    const data = await sequelize.query(`SHOW TABLES LIKE 'course_%' `);
+    // const data = await sequelize.query(`SHOW TABLES LIKE 'course_%' `);
     const course = await sequelize.query(
-      `SELECT * FORM course_${instituteNumber})`
+      `SELECT * FROM course_${instituteNumber} JOIN category_${instituteNumber} ON coure_${instituteNumber}.categoryId = category_${instituteNumber}.id)`,
+      {
+        type: QueryTypes.SELECT,
+      }
     );
     res.status(200).json({ message: "course fetched", data: course });
   }

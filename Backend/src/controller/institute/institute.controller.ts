@@ -145,6 +145,8 @@ foreing key the refrences
   teacherExpertise VARCHAR(255),
   joinedDate DATE,
   salary VARCHAR(100),
+  teacherPhoto VARCHAR(100)
+  password VARCHAR(100)
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   
@@ -197,6 +199,8 @@ foreing key the refrences
   courseLevel ENUM('beginner', 'intermediate', 'advance') NOT NULL,
   courseThumbnail VARCHAR(200), 
   courseDescription TEXT,
+  teacherId VARCHAR(36) REFRENCES teacher_${instituteNumber}(id),
+  categoryId VARCHAR(36) not NULL REFRENCES category_${instituteNumber}(id),
    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
