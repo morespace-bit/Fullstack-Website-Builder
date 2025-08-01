@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ITeacherInitialState } from "../types/type";
+
+interface ITeacherInitialState {
+  teacherName: string;
+  teacherPassword: string;
+}
 
 const teacherInitialState: ITeacherInitialState = {
   teacherName: "",

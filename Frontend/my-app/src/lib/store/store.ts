@@ -1,11 +1,16 @@
 // collect all the sice and store them
 
 import { configureStore } from "@reduxjs/toolkit";
-import teacherSlice from "./teacherSlice";
+// import teacherSlice from "./teacherSlice";
+import teacherSlice from "./teacher/teacherSlice";
+import authSlice from "./auth/authSlice";
+import instituteSlice from "./institute/instituteSlice";
 
 const store = configureStore({
   reducer: {
-    teacherSlice,
+    teacher: teacherSlice,
+    auth: authSlice,
+    institute: instituteSlice,
   },
 });
 
