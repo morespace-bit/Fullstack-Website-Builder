@@ -1,4 +1,5 @@
-export interface ITeacherInitialState {
-  teacherName: string | null;
-  teacherPassword: string;
+export enum Status {
+  SUCCESS = "success",
+  LOADING = "loading",
+  ERROR = "error",
 }
